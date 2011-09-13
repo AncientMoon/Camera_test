@@ -1,0 +1,5 @@
+
+    <LinearLayout android:orientation="vertical" android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+        <Button android:text="Button" android:layout_width="wrap_content" android:id="@+id/back" android:layout_height="wrap_content"></Button>
+        <ImageView android:layout_width="wrap_content" android:id="@+id/combine" android:src="@drawable/icon" android:layout_height="wrap_content"></ImageView>
+    </LinearLayout>
