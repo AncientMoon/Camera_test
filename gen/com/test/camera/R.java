@@ -12,12 +12,15 @@ public final class R {
     }
     public static final class drawable {
         public static final int a=0x7f020000;
-        public static final int blue=0x7f020006;
-        public static final int darkgray=0x7f020004;
-        public static final int icon=0x7f020001;
-        public static final int photo4=0x7f020002;
-        public static final int sample_2=0x7f020003;
-        public static final int white=0x7f020005;
+        public static final int b=0x7f020001;
+        public static final int barack_obama=0x7f020002;
+        public static final int blue=0x7f020009;
+        public static final int darkgray=0x7f020007;
+        public static final int diablo1=0x7f020003;
+        public static final int icon=0x7f020004;
+        public static final int photo4=0x7f020005;
+        public static final int sample_2=0x7f020006;
+        public static final int white=0x7f020008;
     }
     public static final class id {
         public static final int LinearLayout=0x7f050003;

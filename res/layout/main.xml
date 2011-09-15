@@ -3,25 +3,32 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent" 
     xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical">
+    <LinearLayout
+	    android:layout_height="0dip"
+    		android:layout_width="fill_parent"
+    		android:layout_weight="10" android:orientation="horizontal">
+	  
+	   </LinearLayout>
         <LinearLayout android:layout_height="0dip"
     		android:layout_width="fill_parent"
-    		android:layout_weight="80" android:id="@+id/linearLayout1" android:orientation="vertical">
+    		android:layout_weight="65" android:id="@+id/linearLayout1" android:orientation="vertical">
             <AbsoluteLayout android:layout_height="wrap_content" android:id="@+id/absoluteLayout1" android:layout_width="fill_parent">
                 <SurfaceView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/mSurfaceView1" android:visibility="visible"></SurfaceView>
-                <ImageView android:src="@drawable/a" 
+                <ImageView android:src="@drawable/barack_obama" 
                 android:layout_width="fill_parent" 
                 android:id="@+id/imageView1"
                  android:layout_height="fill_parent"
                  android:scaleType="fitXY"></ImageView>
+                 
             </AbsoluteLayout>
         </LinearLayout>
-	  <Gallery 
-		  android:id="@+id/gallery1" 
-		  android:layout_height="0dip"
+        <LinearLayout
+	    android:layout_height="0dip"
     		android:layout_width="fill_parent"
-    		android:layout_weight="10">
-	  </Gallery>
+    		android:layout_weight="15" android:orientation="horizontal">
+        <Gallery android:layout_width="fill_parent" android:id="@+id/gallery1" android:layout_height="fill_parent" ></Gallery>
 	  
+	   </LinearLayout>
 	   <LinearLayout
 	    android:layout_height="0dip"
     		android:layout_width="fill_parent"
@@ -33,4 +40,3 @@
 	  </LinearLayout>
 	  
     </LinearLayout>
-
