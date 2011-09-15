@@ -22,19 +22,14 @@
                  
             </AbsoluteLayout>
         </LinearLayout>
-        <LinearLayout
-	    android:layout_height="0dip"
-    		android:layout_width="fill_parent"
-    		android:layout_weight="15" android:orientation="horizontal">
-        <Gallery android:layout_width="fill_parent" android:id="@+id/gallery1" android:layout_height="fill_parent" ></Gallery>
-	  
-	   </LinearLayout>
+        
 	   <LinearLayout
 	    android:layout_height="0dip"
     		android:layout_width="fill_parent"
     		android:layout_weight="10" android:orientation="horizontal">
 	    
 		  <Button android:id="@+id/myButton1" android:text="@string/str_button1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_x="381dp" android:layout_y="21dp"></Button>
+		  <Button android:text="公版" android:id="@+id/public_photo" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 		  <Button android:id="@+id/myButton2" android:text="@string/str_button2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_x="386dp" android:layout_y="93dp"></Button>
 		  <Button android:id="@+id/myButton3" android:text="@string/str_take_picture" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_x="391dp" android:layout_y="164dp"></Button>
 	  </LinearLayout>

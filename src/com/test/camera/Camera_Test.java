@@ -7,7 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 /* 延伸學習 */
 //import android.content.pm.ActivityInfo;
@@ -28,9 +34,12 @@ import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -41,6 +50,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import android.widget.Toast;
 
@@ -49,7 +60,7 @@ import android.widget.Toast;
 public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	/* 建立私有Camera物件 */
 	private Camera mCamera01;
-	private Button mButton01, mButton02, mButton03;
+	private Button mButton01, mButton02, mButton03, mBtn_public;
 
 	/* 作為review照下來的相片之用 */
 	private ImageView mImageView01;
@@ -130,42 +141,144 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		mButton01 = (Button) findViewById(R.id.myButton1);
 		mButton02 = (Button) findViewById(R.id.myButton2);
 		mButton03 = (Button) findViewById(R.id.myButton3);
+		mBtn_public = (Button) findViewById(R.id.public_photo);
 		Button_Action();
+		
 		// rotate();
 		/*
 		 * 
 		 */
-		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
-		gallery.setVerticalScrollBarEnabled(true);
-		ImageAdapter imageAdapter = new ImageAdapter(this);
-		// 設定圖片來源
-		final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.icon,
-				R.drawable.diablo1,
-				R.drawable.photo4, R.drawable.sample_2, };
-		//rotate(mImageIds[0]);
-		// 設定圖片的位置
-		imageAdapter.setmImageIds(mImageIds);
-		// 圖片高度
-		imageAdapter.setHeight(100);
-		// 圖片寬度
-		imageAdapter.setWidth(200);
-		gallery.setAdapter(imageAdapter);
-		gallery.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView parent, View view,
-					int position, long id) {
-				Toast.makeText(Camera_Test.this, "您選的是第" + position + "張圖",
-						Toast.LENGTH_LONG).show();
-				num= mImageIds[position];
-				mImageView01.setImageResource(mImageIds[position]);
-			//	rotate(mImageIds[position]);
-			}
-		});
+		
 	}
 
 	// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-	
+	/*
+	class gallery_preference  extends DialogPreference 
+	{
 
+		public gallery_preference(Context context) {
+			super(context, null);
+			setDialogLayoutResource(R.layout.back);
+			// TODO Auto-generated constructor stub
+			//Gallery gallery = (Gallery) findViewById(R.id.gallery1);
+			 
+//		        mGallery = new Gallery(context, attrs);
+		        // Give it an ID so it can be saved/restored
+		//	gallery.setId(R.id.gallery1)
+//			gallery.setVerticalScrollBarEnabled(true);
+			Context mContext = getApplicationContext();
+			Dialog dialog = new Dialog(mContext);
+
+			dialog.setContentView(R.layout.custom_dialog);
+			dialog.setTitle("Custom Dialog");
+
+			TextView text = (TextView) dialog.findViewById(R.id.text);
+			text.setText("Hello, this is a custom dialog!");
+			ImageView image = (ImageView) dialog.findViewById(R.id.image);
+			image.setImageResource(R.drawable.android);
+			Gallery gallery = null;
+			gallery.setId(R.id.gallery1);
+			ImageAdapter imageAdapter = new ImageAdapter(context);
+			// 設定圖片來源
+			final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.icon,
+					R.drawable.diablo1,
+					R.drawable.photo4, R.drawable.sample_2, };
+			//rotate(mImageIds[0]);
+			// 設定圖片的位置
+			imageAdapter.setmImageIds(mImageIds);
+			// 圖片高度
+			imageAdapter.setHeight(100);
+			// 圖片寬度
+			imageAdapter.setWidth(200);
+			if(imageAdapter==null)
+				Log.i(TAG,"imageAdapter is null");
+			gallery.setAdapter(imageAdapter);
+			gallery.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView parent, View view,
+						int position, long id) {
+					Toast.makeText(Camera_Test.this, "您選的是第" + position + "張圖",
+							Toast.LENGTH_LONG).show();
+					num= mImageIds[position];
+					mImageView01.setImageResource(mImageIds[position]);
+				//	rotate(mImageIds[position]);
+				}
+			});
+		}
+
+		
+
+		
+		
+	}*/
 	private void Button_Action() {
+		
+		
+		mBtn_public.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// Log.i(TAG,"TEST_One");
+				// Log.e(TAG,"No response");
+				// TODO Auto-generated method stub
+			//	gallery_preference  gl = new gallery_preference(Camera_Test.this);
+			
+			//	TextView text = (TextView) dialog.findViewById(R.id.text);
+			//	text.setText("Hello, this is a custom dialog!");
+			//	ImageView image = (ImageView) dialog.findViewById(R.id.image);
+			//	image.setImageResource(R.drawable.android);
+				
+				LinearLayout layout = new LinearLayout(Camera_Test.this);
+	    		layout.setOrientation(LinearLayout.VERTICAL);
+	//			LinearLayout layout = (LinearLayout)findViewById(R.layout.test);
+	 //   		layout.setGravity(Gravity.CENTER_HORIZONTAL);
+	  //  		layout.setPadding(10, 20, 10, 20);
+	   // 		Gallery gallery = (Gallery)findViewById(R.id.gallery1);
+	    		 Gallery gallery = new Gallery(Camera_Test.this);
+				gallery.setUnselectedAlpha(0.5f);
+			//	gallery.setSelected(true);
+				//gallery.setId(R.id.gallery1);
+				ImageAdapter imageAdapter = new ImageAdapter(Camera_Test.this);
+				// 設定圖片來源
+				final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.icon,
+						R.drawable.diablo1,
+						R.drawable.photo4, R.drawable.sample_2, };
+				//rotate(mImageIds[0]);
+				// 設定圖片的位置
+				imageAdapter.setmImageIds(mImageIds);
+				// 圖片高度
+				imageAdapter.setHeight(100);
+				// 圖片寬度
+				imageAdapter.setWidth(200);
+				if(imageAdapter==null)
+					Log.i(TAG,"imageAdapter is null");
+				else if(gallery==null)
+					Log.i(TAG,"gallery is null");
+				gallery.setAdapter(imageAdapter);
+				gallery.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView parent, View view,
+							int position, long id) {
+						Toast.makeText(Camera_Test.this, "您選的是第" + position + "張圖",
+								Toast.LENGTH_LONG).show();
+						num= mImageIds[position];
+						mImageView01.setImageResource(mImageIds[position]);
+				
+					//	rotate(mImageIds[position]);
+					}
+				});
+				
+	    		layout.addView(gallery);
+
+	    		new AlertDialog.Builder(Camera_Test.this)
+	    		.setView(layout)
+
+	    		//.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    		//public void onClick(DialogInterface dialog, int which) {
+	    		//}})
+	    		.show();
+				
+			}
+		});
+		
 		/* 開啟相機及Preview */
 		mButton01.setOnClickListener(new Button.OnClickListener() {
 
