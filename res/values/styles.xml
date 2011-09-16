@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+	<style name="Gallery_Style" parent="android:Widget.Gallery">
+	<item name="android:background">#00000000</item>
+    </style>
+    <!-- Base application theme is the default theme. -->
+    <style name="Theme" parent="android:Theme">
+    </style>
+	
+  
+    <style name="AlertDialogCustom" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+   
+    <!-- A theme that has a wallpaper background.  Here we explicitly specify
+         that this theme is to inherit from the system's wallpaper theme,
+         which sets up various attributes correctly. -->
+    <style name="Theme.Wallpaper" parent="android:style/Theme.Wallpaper">
+        <item name="android:colorForeground">#fff</item>
+    </style>
+
+   
+    
+</resources>

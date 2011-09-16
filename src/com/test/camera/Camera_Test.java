@@ -22,6 +22,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,6 +40,7 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -67,12 +69,14 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	private static String TAG = "Camera_Test";
 	private SurfaceView mSurfaceView01;
 	private SurfaceHolder mSurfaceHolder01;
-	// private ImageView iv2;
+	
+	/*選擇哪張圖片*/
 	private Integer num;
-	// private int intScreenX, intScreenY;
 	/* 預設相機預覽模式為false */
 	private boolean bIfPreview = false;
-
+	/*鏡頭拍攝方向 landscape is true*/
+	private boolean camera_state = false;
+	
 	/* 將照下來的圖檔儲存在此 */
 	private String strCaptureFilePath = "/sdcard/CamerTest/camera_snap.jpg";
 
@@ -96,35 +100,25 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 
 			new File(strDirectory).mkdir();
 		}
-
 		/* 取得螢幕解析像素 */
 		DisplayMetrics dm = new DisplayMetrics();
-
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-
 		/* 延伸學習 */
-
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
 		mImageView01 = (ImageView) findViewById(R.id.imageView1);
-
 		// mImageView0test.setAlpha(-1);
 		/* 以SurfaceView作為相機Preview之用 */
 		mSurfaceView01 = (SurfaceView) findViewById(R.id.mSurfaceView1);
 		// 取得螢幕顯示的資料
-		int ScreenWidth = dm.widthPixels;
-		int ScreenHeight = dm.heightPixels;
+//		int ScreenWidth = dm.widthPixels;
+//		int ScreenHeight = dm.heightPixels;
 		// 螢幕寬和高的Pixels
-		
-			
-		// surfceview放置在顶层，即始终位于最上层
-
+				
 		// Uri.fromFile(new
 		// File(Environment.getExternalStorageDirectory(),"檔案名稱"));
 
 		/* 繫結SurfaceView，取得SurfaceHolder物件 */
 		mSurfaceHolder01 = mSurfaceView01.getHolder();
-
 		/* Activity必須實作SurfaceHolder.Callback */
 		mSurfaceHolder01.addCallback(Camera_Test.this);
 		/* 欲在SurfaceView上繪圖，需先lock鎖定SurfaceHolder */
@@ -138,78 +132,18 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		 */
 		mSurfaceHolder01.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
+		FindView();
+		Button_Action();
+		
+	}
+	private void FindView()
+	{
 		mButton01 = (Button) findViewById(R.id.myButton1);
 		mButton02 = (Button) findViewById(R.id.myButton2);
 		mButton03 = (Button) findViewById(R.id.myButton3);
 		mBtn_public = (Button) findViewById(R.id.public_photo);
-		Button_Action();
-		
-		// rotate();
-		/*
-		 * 
-		 */
-		
 	}
-
-	// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-	/*
-	class gallery_preference  extends DialogPreference 
-	{
-
-		public gallery_preference(Context context) {
-			super(context, null);
-			setDialogLayoutResource(R.layout.back);
-			// TODO Auto-generated constructor stub
-			//Gallery gallery = (Gallery) findViewById(R.id.gallery1);
-			 
-//		        mGallery = new Gallery(context, attrs);
-		        // Give it an ID so it can be saved/restored
-		//	gallery.setId(R.id.gallery1)
-//			gallery.setVerticalScrollBarEnabled(true);
-			Context mContext = getApplicationContext();
-			Dialog dialog = new Dialog(mContext);
-
-			dialog.setContentView(R.layout.custom_dialog);
-			dialog.setTitle("Custom Dialog");
-
-			TextView text = (TextView) dialog.findViewById(R.id.text);
-			text.setText("Hello, this is a custom dialog!");
-			ImageView image = (ImageView) dialog.findViewById(R.id.image);
-			image.setImageResource(R.drawable.android);
-			Gallery gallery = null;
-			gallery.setId(R.id.gallery1);
-			ImageAdapter imageAdapter = new ImageAdapter(context);
-			// 設定圖片來源
-			final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.icon,
-					R.drawable.diablo1,
-					R.drawable.photo4, R.drawable.sample_2, };
-			//rotate(mImageIds[0]);
-			// 設定圖片的位置
-			imageAdapter.setmImageIds(mImageIds);
-			// 圖片高度
-			imageAdapter.setHeight(100);
-			// 圖片寬度
-			imageAdapter.setWidth(200);
-			if(imageAdapter==null)
-				Log.i(TAG,"imageAdapter is null");
-			gallery.setAdapter(imageAdapter);
-			gallery.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView parent, View view,
-						int position, long id) {
-					Toast.makeText(Camera_Test.this, "您選的是第" + position + "張圖",
-							Toast.LENGTH_LONG).show();
-					num= mImageIds[position];
-					mImageView01.setImageResource(mImageIds[position]);
-				//	rotate(mImageIds[position]);
-				}
-			});
-		}
-
-		
-
-		
-		
-	}*/
+	
 	private void Button_Action() {
 		
 		
@@ -217,29 +151,24 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 
 			@Override
 			public void onClick(View v) {
-				// Log.i(TAG,"TEST_One");
-				// Log.e(TAG,"No response");
-				// TODO Auto-generated method stub
-			//	gallery_preference  gl = new gallery_preference(Camera_Test.this);
-			
-			//	TextView text = (TextView) dialog.findViewById(R.id.text);
-			//	text.setText("Hello, this is a custom dialog!");
-			//	ImageView image = (ImageView) dialog.findViewById(R.id.image);
-			//	image.setImageResource(R.drawable.android);
+				
 				
 				LinearLayout layout = new LinearLayout(Camera_Test.this);
 	    		layout.setOrientation(LinearLayout.VERTICAL);
-	//			LinearLayout layout = (LinearLayout)findViewById(R.layout.test);
-	 //   		layout.setGravity(Gravity.CENTER_HORIZONTAL);
-	  //  		layout.setPadding(10, 20, 10, 20);
+	    		//layout.setWeightSum(50);
+	    		
+	    		layout.setGravity(Gravity.CENTER_HORIZONTAL);
+	    //		layout.setPadding(10, 20, 10, 20);
+	    		layout.setBackgroundColor(Color.argb(0, 0, 255, 0));
 	   // 		Gallery gallery = (Gallery)findViewById(R.id.gallery1);
 	    		 Gallery gallery = new Gallery(Camera_Test.this);
 				gallery.setUnselectedAlpha(0.5f);
+				gallery.setBackgroundColor(Color.argb(0, 0, 255, 0));
 			//	gallery.setSelected(true);
 				//gallery.setId(R.id.gallery1);
 				ImageAdapter imageAdapter = new ImageAdapter(Camera_Test.this);
 				// 設定圖片來源
-				final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.icon,
+				final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.barack_obama,
 						R.drawable.diablo1,
 						R.drawable.photo4, R.drawable.sample_2, };
 				//rotate(mImageIds[0]);
@@ -249,16 +178,12 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				imageAdapter.setHeight(100);
 				// 圖片寬度
 				imageAdapter.setWidth(200);
-				if(imageAdapter==null)
-					Log.i(TAG,"imageAdapter is null");
-				else if(gallery==null)
-					Log.i(TAG,"gallery is null");
 				gallery.setAdapter(imageAdapter);
 				gallery.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView parent, View view,
 							int position, long id) {
-						Toast.makeText(Camera_Test.this, "您選的是第" + position + "張圖",
-								Toast.LENGTH_LONG).show();
+					//	Toast.makeText(Camera_Test.this, "您選的是第" + position + "張圖",
+					//			Toast.LENGTH_LONG).show();
 						num= mImageIds[position];
 						mImageView01.setImageResource(mImageIds[position]);
 				
@@ -267,14 +192,20 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				});
 				
 	    		layout.addView(gallery);
-
-	    		new AlertDialog.Builder(Camera_Test.this)
+	    		
+	    		//new AlertDialog.Builder(new ContextThemeWrapper(Camera_Test.this,R.style.AlertDialogCustom))
+	    		Dialog dialog = new AlertDialog.Builder(Camera_Test.this)
 	    		.setView(layout)
-
-	    		//.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    		//public void onClick(DialogInterface dialog, int which) {
-	    		//}})
 	    		.show();
+	    	
+	    	    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();   
+	    	    lp.alpha=0.5f;
+	    	    lp.y = getWindowManager().getDefaultDisplay().getHeight()/4;
+	    	    lp.width = getWindowManager().getDefaultDisplay().getWidth();
+//	    	    Log.i(TAG,"Screen height is "+getWindowManager().getDefaultDisplay().getHeight());
+	    	    lp.screenBrightness=lp.BRIGHTNESS_OVERRIDE_FULL;
+	    	    dialog.getWindow().setAttributes(lp);  
+	    	    dialog.show();
 				
 			}
 		});
@@ -322,27 +253,27 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		});
 	}
 
-	private void rotate(Integer images) {
-		final Bitmap mySourceBmp = BitmapFactory.decodeResource(getResources(),
-				images);
-		final int width_ori = mySourceBmp.getWidth();
-		final int height_ori = mySourceBmp.getHeight();
+	/*旋轉圖片九十度*/
+	private Bitmap rotate(Bitmap images) {
+	//	final Bitmap mySourceBmp = BitmapFactory.decodeResource(getResources(),
+		//		images);
+		final int width_ori = images.getWidth();
+		final int height_ori = images.getHeight();
 
 		float width = width_ori;
 		float height = height_ori;
 
 		Matrix matrix = new Matrix();
 		matrix.postScale(width, height);
-		matrix.setRotate(-90);
+		matrix.setRotate(90);
 
-		Bitmap resized_Bmp = Bitmap.createBitmap(mySourceBmp, 0, 0, width_ori,
+		Bitmap resized_Bmp = Bitmap.createBitmap(images, 0, 0, width_ori,
 				height_ori, matrix, true);
-		BitmapDrawable myNewBitmapDrawable = new BitmapDrawable(resized_Bmp);
-		mImageView01.setImageDrawable(myNewBitmapDrawable);
-		// resized_Bmp.recycle();
-		// mySourceBmp.recycle();
+	//	BitmapDrawable myNewBitmapDrawable = new BitmapDrawable(resized_Bmp);
+		//mImageView01.setImageDrawable(myNewBitmapDrawable);
+		return resized_Bmp;
 	}
-
+	/*建立浮水印圖片*/
 	private Bitmap createBitmap(Bitmap src, Bitmap watermark) {
 	//	String tag = "createBitmap";
 		//Log.d(tag, "create a new bitmap");
@@ -352,25 +283,30 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		
 		int w = src.getWidth();
 		int h = src.getHeight();
-		
+		Log.i(TAG,"w is :"+w);
+		Log.i(TAG,"h is :"+h);
 		// create the new blank bitmap
 		Bitmap newb = Bitmap.createBitmap(w, h, Config.ARGB_8888);// 创建一个新的和SRC长度宽度一样的位图
-		
+		Bitmap scaled_watermark=null;
 		Canvas cv = new Canvas(newb);
 	//	newb.recycle();
 		BitmapFactory.Options options=new BitmapFactory.Options();
-		options.inSampleSize = 8;
+		options.inSampleSize = 1;
 	//	BitmapFactory.decodeResource(watermark,null,options);
 		//Resource res = null;
 	//	Bitmap scaled_watermark = Bitmap.createBitmap(watermark, 0, 0, w, h, null, true);
-	
-		Bitmap scaled_watermark = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),num,options), w, h,true);
-		//watermark.recycle();
-		//	int ww = scaled_watermark.getWidth();
-	//	int wh = scaled_watermark.getHeight();
+		if(camera_state)
+			scaled_watermark = rotate(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),num,options), h, w,true));
+		else
+			scaled_watermark = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),num,options), w, h,true);
+
+			int ww = scaled_watermark.getWidth();
+	int wh = scaled_watermark.getHeight();
+	Log.i(TAG,"ww is :"+ww);
+	Log.i(TAG,"wh is :"+wh);
 		// draw src intoBitmap
 		cv.drawBitmap(src, 0, 0, null);// 在 0，0坐标开始画入src
-
+	//	if(scaled_watermark!=null)
 		cv.drawBitmap(scaled_watermark, 0, 0, null);
 		// save all clip
 		cv.save(Canvas.ALL_SAVE_FLAG);// 保存
@@ -411,7 +347,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				mCamera01.setPreviewDisplay(mSurfaceHolder01);
 				/* 建立Camera.Parameters物件 */
 				Camera.Parameters parameters = mCamera01.getParameters();
-				parameters.set("jpeg-quality", 50);
+				//parameters.set("jpeg-quality", 50);
 				parameters.set("orientation", "landscape");
 				/*
 				 * for following code 2.2 is useable,but 2.0 is down
@@ -424,11 +360,13 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				    // Uncomment for Android 2.0 and above
 				    // parameters.setRotation(90);
 				    // parameters.set("rotation", "0");
+				    camera_state=false;
 				   } else {
 				    // This is an undocumented although widely known feature
 				    parameters.set("orientation", "landscape");
 				    // For Android 2.2 and above  (加在這)
 				    mCamera01.setDisplayOrientation(0);
+				    camera_state=true;
 				    // Uncomment for Android 2.0 and above
 				   // parameters.setRotation(0);
 				   }
@@ -531,13 +469,13 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 			/* onPictureTaken傳入的第一個參數即為相片的byte */
 			Bitmap bm = BitmapFactory.decodeByteArray(_data, 0, _data.length);
 			/* 建立新檔 */
-			Bitmap scaled_bm = Bitmap.createScaledBitmap(bm, 1024, 1024,true);
+			//Bitmap scaled_bm = rotate(Bitmap.createScaledBitmap(bm, 640, 960,true));
+			Bitmap scaled_bm = rotate(Bitmap.createScaledBitmap(bm, 960, 640,true));
 			// File myCaptureFile = new
 			// File(Environment.getExternalStorageDirectory()+"/CameraTest/test.jpg");
 			bm.recycle();
 			System.out.println("Before start photo");
 			try {
-			
 			
 				//Bitmap mBitmap = BitmapFactory.decodeResource(getResources(),
 				//		num);
@@ -563,7 +501,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				BufferedOutputStream bos = new BufferedOutputStream(
 						new FileOutputStream(myCaptureFile));
 				
-				srcThree.compress(CompressFormat.JPEG, 80, bos);
+				srcThree.compress(CompressFormat.JPEG, 100, bos);
 				bos.flush();
 
 				/* 結束OutputStream */
@@ -580,7 +518,8 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 			}
 		}
 	};
-
+	/*以下為攝像相關函式*/
+	
 	/* 自訂刪除檔案函數 */
 	private void delFile(String strFileName) {
 		try {

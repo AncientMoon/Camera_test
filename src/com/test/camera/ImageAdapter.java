@@ -1,6 +1,7 @@
 package com.test.camera;
 
 	import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 	import android.view.View;
 	import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 	        Log.e(TAG,"Best guest2");
 	        //設定圖片來源
 	        imageView.setImageResource(mImageIds[position]);
+	        imageView.setBackgroundColor(Color.argb(0, 0, 255, 0));
 	        //設定圖片的寬、高
 	        imageView.setLayoutParams(new Gallery.LayoutParams(width, height));
 	        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
