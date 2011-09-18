@@ -7,13 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 /* 延伸學習 */
 //import android.content.pm.ActivityInfo;
@@ -34,6 +34,7 @@ import android.hardware.Camera;
 /* 引用PictureCallback作為取得拍照後的事件 */
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 
@@ -62,7 +63,7 @@ import android.widget.Toast;
 public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	/* 建立私有Camera物件 */
 	private Camera mCamera01;
-	private Button mButton01, mButton02, mButton03, mBtn_public;
+	private Button mButton01, mButton02, mButton03,mButton04, mBtn_public;
 
 	/* 作為review照下來的相片之用 */
 	private ImageView mImageView01;
@@ -141,7 +142,18 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		mButton01 = (Button) findViewById(R.id.myButton1);
 		mButton02 = (Button) findViewById(R.id.myButton2);
 		mButton03 = (Button) findViewById(R.id.myButton3);
+		mButton04 = (Button) findViewById(R.id.photo_from_sd);
 		mBtn_public = (Button) findViewById(R.id.public_photo);
+	}
+	
+	protected void onResume()
+	{
+		super.onResume();
+		String image_path = null;
+		SharedPreferences settings = getSharedPreferences("Camera", 0);
+		image_path = settings.getString("image_path", null);
+		if(image_path!=null)
+    	mImageView01.setImageURI(Uri.parse(image_path));
 	}
 	
 	private void Button_Action() {
@@ -249,6 +261,22 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 					Toast.makeText(Camera_Test.this, R.string.str_err_nosd,
 							Toast.LENGTH_SHORT).show();
 				}
+			}
+		});
+		mButton04.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// Log.i(TAG,"TEST_One");
+				// Log.e(TAG,"No response");
+				// TODO Auto-generated method stub
+				/* 自訂初始化開啟相機函數 */
+		//		GetFile getfile = new GetFile(Camera_Test.this);
+				Intent intent = new Intent();
+				intent.setClass(Camera_Test.this,GetFile.class);
+				startActivity(intent);
+				//StartActivity(GetFile);
+				
 			}
 		});
 	}
