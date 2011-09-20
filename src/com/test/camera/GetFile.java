@@ -26,7 +26,8 @@ public class GetFile extends ListActivity
 {
 	private List<String> items = null;
 	private List<String> paths = null;
-	private String rootPath = "/";
+	private String rootPath = "/sdcard";
+//	private String rootPath = "/";
 	private TextView mPath;
 	private Context context;
 	private String TAG = "Camera_Test";

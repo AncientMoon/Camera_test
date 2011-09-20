@@ -18,6 +18,7 @@
         	android:label="@string/app_name" 
         	android:name=".GetFile">
         </activity>
+        <activity android:name="Temp_Photo" android:label="@string/app_name"></activity>
 
     </application>
   <uses-permission android:name="android.permission.CAMERA"/>

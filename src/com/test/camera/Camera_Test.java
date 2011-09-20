@@ -2,6 +2,7 @@ package com.test.camera;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,11 +11,11 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.content.res.Configuration;
+import android.database.Cursor;
 /* 延伸學習 */
 //import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -25,7 +26,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
+
+import android.graphics.drawable.Drawable;
 
 
 /* 引用Camera類別 */
@@ -36,12 +38,13 @@ import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 
-import android.util.AttributeSet;
+import android.provider.MediaStore;
+
+
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
+
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -54,30 +57,30 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 
 import android.widget.Toast;
 
 
-/* 使Activity實作SurfaceHolder.Callback */
+/* 使Activiy實作SurfaceHolder.Callback */
 public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	/* 建立私有Camera物件 */
 	private Camera mCamera01;
-	private Button mButton01, mButton02, mButton03,mButton04, mBtn_public;
-
+	private Button mButton01, mButton02, mButton03,mButton04,mButton05, mBtn_public;
+	private int SELECT_PICTURE;
 	/* 作為review照下來的相片之用 */
 	private ImageView mImageView01;
 	private static String TAG = "Camera_Test";
 	private SurfaceView mSurfaceView01;
 	private SurfaceHolder mSurfaceHolder01;
-	
+	private String image_path = null;
 	/*選擇哪張圖片*/
 	private Integer num;
 	/* 預設相機預覽模式為false */
 	private boolean bIfPreview = false;
 	/*鏡頭拍攝方向 landscape is true*/
 	private boolean camera_state = false;
-	
+	private boolean triger = false;
 	/* 將照下來的圖檔儲存在此 */
 	private String strCaptureFilePath = "/sdcard/CamerTest/camera_snap.jpg";
 
@@ -135,7 +138,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 
 		FindView();
 		Button_Action();
-		
+		Log.i(TAG,"This is onCreate()");
 	}
 	private void FindView()
 	{
@@ -143,17 +146,23 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		mButton02 = (Button) findViewById(R.id.myButton2);
 		mButton03 = (Button) findViewById(R.id.myButton3);
 		mButton04 = (Button) findViewById(R.id.photo_from_sd);
+		mButton05 = (Button) findViewById(R.id.combine_photo);
+	//	mButton06 = (Button) findViewById(R.id.Delete_thumb_nails);
 		mBtn_public = (Button) findViewById(R.id.public_photo);
 	}
-	
+	private Intent intent = null;
 	protected void onResume()
 	{
 		super.onResume();
-		String image_path = null;
-		SharedPreferences settings = getSharedPreferences("Camera", 0);
-		image_path = settings.getString("image_path", null);
-		if(image_path!=null)
-    	mImageView01.setImageURI(Uri.parse(image_path));
+		/* 自訂初始化開啟相機函數 */
+		Log.i(TAG,"This is onResume()");
+		
+		
+		/*	if(image_path!=null)
+				mSurfaceView01.setBackgroundDrawable(Drawable.createFromPath(image_path));
+			else
+				Log.e(TAG,"image_path is null : "+image_path);
+*/
 	}
 	
 	private void Button_Action() {
@@ -180,16 +189,14 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				//gallery.setId(R.id.gallery1);
 				ImageAdapter imageAdapter = new ImageAdapter(Camera_Test.this);
 				// 設定圖片來源
-				final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.barack_obama,
-						R.drawable.diablo1,
-						R.drawable.photo4, R.drawable.sample_2, };
+				final Integer[] mImageIds = { R.drawable.a,R.drawable.b, R.drawable.barack_obama,R.drawable.ts};
 				//rotate(mImageIds[0]);
 				// 設定圖片的位置
 				imageAdapter.setmImageIds(mImageIds);
 				// 圖片高度
 				imageAdapter.setHeight(100);
 				// 圖片寬度
-				imageAdapter.setWidth(200);
+				imageAdapter.setWidth(110);
 				gallery.setAdapter(imageAdapter);
 				gallery.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView parent, View view,
@@ -272,15 +279,124 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				// TODO Auto-generated method stub
 				/* 自訂初始化開啟相機函數 */
 		//		GetFile getfile = new GetFile(Camera_Test.this);
+				/*
 				Intent intent = new Intent();
 				intent.setClass(Camera_Test.this,GetFile.class);
 				startActivity(intent);
-				//StartActivity(GetFile);
+				*/
+				 intent = new Intent();
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				//startActivity(Intent.createChooser(intent, "Select Picture"));
+				startActivityForResult(Intent.createChooser(intent,
+                        "Select Picture"), SELECT_PICTURE);
+				//image_path	 = Intent.this.getDataString();	//StartActivity(GetFile);
+				
+			}
+		});
+		mButton05.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// Log.i(TAG,"TEST_One");
+				// Log.e(TAG,"No response");
+				// TODO Auto-generated method stub
+				/* 自訂初始化開啟相機函數 */
+				Bitmap src =  Bitmap.createScaledBitmap(BitmapFactory.decodeFile(image_path), 640, 960, true);
+				Bitmap mBitmap = null;
+				Bitmap srcThree = createBitmap(src, mBitmap);// 建立浮水印於已拍下的畫面上
+				File myCaptureFile = new File(
+						"/sdcard/CameraTest/combine_snap.jpg");
+				if (myCaptureFile.exists())
+					myCaptureFile.delete();
+				if (myCaptureFile == null)
+					Log.e(TAG, "fail to open new file");
+				else
+					Log.e(TAG, myCaptureFile.toString());
+				
+			
+				BufferedOutputStream bos;
+				try {
+					bos = new BufferedOutputStream(
+							new FileOutputStream(myCaptureFile));
+					srcThree.compress(CompressFormat.JPEG, 100, bos);
+					bos.flush();
+ 
+					/* 結束OutputStream */
+					bos.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				
 			}
 		});
 	}
+	/*---Start---從另一個Intent抓圖片路徑檔 with startActivityForResult */
+	//UPDATED
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
 
+                //OI FILE Manager
+                String filemanagerstring = selectedImageUri.getPath();
+
+                //MEDIA GALLERY
+                image_path = getPath(selectedImageUri);
+
+                //DEBUG PURPOSE - you can delete this if you want
+                if(image_path!=null)
+                    System.out.println(image_path);
+                else System.out.println("selectedImagePath is null");
+                if(filemanagerstring!=null)
+                    System.out.println(filemanagerstring);
+                else System.out.println("filemanagerstring is null");
+
+                //NOW WE HAVE OUR WANTED STRING
+                if(image_path!=null)
+                    System.out.println("selectedImagePath is the right one for you!");
+                else
+                    System.out.println("filemanagerstring is the right one for you!");
+                triger= true;
+                if(triger)
+        		{
+        			Intent intent = new Intent();
+        	        intent.setClass(Camera_Test.this,Temp_Photo.class);
+        	        Bundle bundle = new Bundle();
+        	        bundle.putString("image_path", image_path);
+        	     //  	intent.putExtra("image_path", image_path);
+        	        intent.putExtras(bundle);
+        	       	startActivity(intent);
+        	       	triger = false;
+        		}
+            }
+        }
+        
+       	
+    }
+
+    //UPDATED!
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if(cursor!=null)
+        {
+            //HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            //THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        else return null;
+    }
+    /*---END---從另一個Intent抓圖片路徑檔 with startActivityForResult */
+    
 	/*旋轉圖片九十度*/
 	private Bitmap rotate(Bitmap images) {
 	//	final Bitmap mySourceBmp = BitmapFactory.decodeResource(getResources(),
@@ -329,18 +445,18 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 			scaled_watermark = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),num,options), w, h,true);
 
 			int ww = scaled_watermark.getWidth();
-	int wh = scaled_watermark.getHeight();
-	Log.i(TAG,"ww is :"+ww);
-	Log.i(TAG,"wh is :"+wh);
-		// draw src intoBitmap
-		cv.drawBitmap(src, 0, 0, null);// 在 0，0坐标开始画入src
-	//	if(scaled_watermark!=null)
-		cv.drawBitmap(scaled_watermark, 0, 0, null);
-		// save all clip
-		cv.save(Canvas.ALL_SAVE_FLAG);// 保存
-		// store
-		cv.restore();// 存储
-		return newb;
+		int wh = scaled_watermark.getHeight();
+		Log.i(TAG,"ww is :"+ww);
+		Log.i(TAG,"wh is :"+wh);
+			// draw src intoBitmap
+			cv.drawBitmap(src, 0, 0, null);// 在 0，0坐标开始画入src
+		//	if(scaled_watermark!=null)
+			cv.drawBitmap(scaled_watermark, 0, 0, null);
+			// save all clip
+			cv.save(Canvas.ALL_SAVE_FLAG);// 保存
+			// store
+			cv.restore();// 存储
+			return newb;
 	}
 
 	/* 自訂初始相機函數 */
@@ -425,7 +541,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 							}
 						}
 						/* 在2.0模擬器中，設定不支援的PictureSize將造成Exception */
-						parameters.setPictureSize(512, 384);
+						parameters.setPictureSize(512, 384);//weird...
 						// parameters.setPictureSize(213, 350);
 						/* 將Camera.Parameters設定予Camera */
 						mCamera01.setParameters(parameters);
@@ -502,7 +618,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 			// File myCaptureFile = new
 			// File(Environment.getExternalStorageDirectory()+"/CameraTest/test.jpg");
 			bm.recycle();
-			System.out.println("Before start photo");
+			//System.out.println("Before start photo");
 			try {
 			
 				//Bitmap mBitmap = BitmapFactory.decodeResource(getResources(),
@@ -516,10 +632,12 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				/* 將拍照下來且儲存完畢的圖檔，顯示出來 */
 				// ImageView01.setImageBitmap(bm);
 				// 以下存入SDCard
-				System.out.println("Picture Save Start");
+				
 
 				File myCaptureFile = new File(
 						"/sdcard/CameraTest/camera_snap.jpg");
+				if (myCaptureFile.exists())
+						myCaptureFile.delete();
 				if (myCaptureFile == null)
 					Log.e(TAG, "fail to open new file");
 				else
@@ -610,13 +728,11 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		try {
-			resetCamera();
-			mCamera01.release();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		super.onPause();
+		//	resetCamera();
+		if(mCamera01!=null)
+			mCamera01.release();
+		
 	}
 
 }

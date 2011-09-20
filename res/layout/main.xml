@@ -9,6 +9,7 @@
     		android:layout_weight="10" android:orientation="horizontal">
         <Button android:layout_height="wrap_content" android:id="@+id/myButton1" android:layout_width="wrap_content" android:text="@string/str_button1"></Button>
         <Button android:layout_height="wrap_content" android:id="@+id/myButton2" android:layout_width="wrap_content" android:text="@string/str_button2"></Button>
+        <Button android:layout_height="wrap_content" android:text="合圖" android:id="@+id/combine_photo" android:layout_width="wrap_content"></Button>
 	  
 	   </LinearLayout>
         <LinearLayout android:layout_height="0dip"
@@ -34,8 +35,8 @@
 	         android:layout_width="wrap_content" 
 	         android:layout_height="wrap_content">
 	         </Button>
+	       <Button android:layout_height="wrap_content" android:text="@string/str_take_picture" android:id="@+id/myButton3" android:layout_width="wrap_content"></Button>
 		  <Button android:text="公版" android:id="@+id/public_photo" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-		  <Button android:id="@+id/myButton3" android:text="@string/str_take_picture" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_x="391dp" android:layout_y="164dp"></Button>
-	  </LinearLayout>
+		 </LinearLayout>
 	  
     </LinearLayout>

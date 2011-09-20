@@ -20,15 +20,13 @@ import android.widget.ImageView;
 	    }
 	 
 	    public View getView(int position, View convertView, ViewGroup parent) {
-	    	Log.e(TAG,"Best guest");
 	        ImageView imageView = new ImageView(mContext);
-	        Log.e(TAG,"Best guest2");
 	        //設定圖片來源
 	        imageView.setImageResource(mImageIds[position]);
 	        imageView.setBackgroundColor(Color.argb(0, 0, 255, 0));
 	        //設定圖片的寬、高
 	        imageView.setLayoutParams(new Gallery.LayoutParams(width, height));
-	        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+	        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 	        return imageView;
 	    }
 	 
