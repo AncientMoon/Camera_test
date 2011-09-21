@@ -1,8 +1,10 @@
 package com.test.camera;
 
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -160,7 +162,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	}
 	private void FindView()
 	{
-	//	layout = (LinearLayout)findViewById(R.id.linear);
+		layout = (LinearLayout)findViewById(R.id.linear);
 		/* 延伸學習 */
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		gallery = (Gallery)findViewById(R.id.gallery_test);
@@ -247,7 +249,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				{
 					
 		    //		Gallery gallery = new Gallery(Camera_Test.this);
-					gallery.setUnselectedAlpha(0.5f);
+					gallery.setUnselectedAlpha(0.7f);
 					gallery.setBackgroundColor(Color.argb(0, 0, 255, 0));
 				//	gallery.setSelected(true);
 					//gallery.setId(R.id.gallery1);
@@ -257,9 +259,9 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 					// 設定圖片的位置
 					imageAdapter.setmImageIds(mImageIds);
 					// 圖片高度
-					imageAdapter.setHeight(100);
+					imageAdapter.setHeight(120);
 					// 圖片寬度
-					imageAdapter.setWidth(110);
+					imageAdapter.setWidth(120);
 					gallery.setAdapter(imageAdapter);
 					gallery.setOnItemClickListener(new OnItemClickListener() {
 						public void onItemClick(AdapterView parent, View view,
@@ -273,12 +275,16 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 						}
 					});
 					Log.i(TAG,"flag ..."+flag);
-					gallery.setVisibility(0);
+					//gallery.setVisibility(0);
+					layout.setVisibility(0);
 					flag=true;
+					mBtn_public.setText("回收公版");
 				}
 				else
 					{
-						gallery.setVisibility(4);
+						mBtn_public.setText("公版");
+					//	gallery.setVisibility(4);
+						layout.setVisibility(4);
 						flag=false;
 						/*常量值为0，意思是可见的 
 常量值为4，意思是不可见的 
@@ -711,6 +717,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		} else {
 			return false;
 		}
+		
 	}
 
 	@Override
@@ -722,7 +729,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	//	 resetCamera();
 	//	 if(!bIfPreview)
 //	----------------------------	 
-	//	 initCamera();
+		 initCamera();
 			 
 		 
 	}

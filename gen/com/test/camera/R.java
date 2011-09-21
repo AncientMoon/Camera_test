@@ -14,33 +14,38 @@ public final class R {
         public static final int a=0x7f020000;
         public static final int b=0x7f020001;
         public static final int barack_obama=0x7f020002;
-        public static final int blue=0x7f02000a;
-        public static final int darkgray=0x7f020008;
-        public static final int diablo1=0x7f020003;
-        public static final int icon=0x7f020004;
-        public static final int photo4=0x7f020005;
-        public static final int photothumb=0x7f020006;
-        public static final int sample_2=0x7f020007;
-        public static final int white=0x7f020009;
+        public static final int blue=0x7f020007;
+        public static final int darkgray=0x7f020005;
+        public static final int icon=0x7f020003;
+        public static final int ts=0x7f020004;
+        public static final int white=0x7f020006;
     }
     public static final class id {
-        public static final int LinearLayout=0x7f060001;
-        public static final int absoluteLayout1=0x7f060005;
-        public static final int gallery1=0x7f06000b;
-        public static final int imageView1=0x7f060007;
-        public static final int linearLayout1=0x7f060004;
-        public static final int mSurfaceView1=0x7f060006;
-        public static final int myButton1=0x7f060002;
-        public static final int myButton2=0x7f060003;
-        public static final int myButton3=0x7f06000a;
-        public static final int photo_from_sd=0x7f060008;
+        public static final int LinearLayout=0x7f060011;
+        public static final int Temp_Photo_view=0x7f06000c;
+        public static final int absoluteLayout1=0x7f060002;
+        public static final int absoluteLayout2=0x7f06000b;
+        public static final int delete=0x7f060010;
+        public static final int gallery1=0x7f060012;
+        public static final int gallery456t=0x7f06000a;
+        public static final int gallery_test=0x7f060006;
+        public static final int imageView1=0x7f060004;
+        public static final int linear=0x7f060005;
+        public static final int linearLayout1=0x7f060001;
+        public static final int mSurfaceView1=0x7f060003;
+        public static final int main=0x7f060000;
+        public static final int overlap_temp_photo=0x7f06000d;
+        public static final int photo_from_sd=0x7f060007;
         public static final int public_photo=0x7f060009;
-        public static final int text1=0x7f060000;
+        public static final int save=0x7f06000f;
+        public static final int share=0x7f06000e;
+        public static final int take_picture=0x7f060008;
     }
     public static final class layout {
-        public static final int file_row=0x7f030000;
-        public static final int main=0x7f030001;
-        public static final int test=0x7f030002;
+        public static final int main=0x7f030000;
+        public static final int popup_example=0x7f030001;
+        public static final int temp_photo=0x7f030002;
+        public static final int test=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f040001;
