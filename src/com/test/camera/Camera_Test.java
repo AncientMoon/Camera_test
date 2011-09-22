@@ -88,8 +88,8 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	private boolean camera_state = false;
 	private boolean triger = false;
 	/* 將照下來的圖檔儲存在此 */
-	private String strCaptureFilePath = "/sdcard/CamerTest/camera_snap.jpg";
-	private Intent intent = null;
+	private String strCaptureFilePath = "/sdcard/CameraTest/camera_snap.jpg";
+//	private Intent intent = null;
 	// 設定公版圖片來源
 	final Integer[] mImageIds = { R.drawable.ts,R.drawable.a,R.drawable.b, R.drawable.barack_obama};
 	private boolean flag = false;
@@ -328,7 +328,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				intent.setClass(Camera_Test.this,GetFile.class);
 				startActivity(intent);
 				*/
-				 intent = new Intent();
+				Intent intent = new Intent();
 				intent.setType("image/*");
 				intent.setAction(Intent.ACTION_GET_CONTENT);
 				//startActivity(Intent.createChooser(intent, "Select Picture"));
@@ -638,7 +638,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 				//Bitmap mBitmap = BitmapFactory.decodeResource(getResources(),
 				//		num);
 				Bitmap mBitmap = null;
-				Bitmap srcThree = createBitmap(scaled_bm, mBitmap);// 建立浮水印於已拍下的畫面上
+			//	Bitmap srcThree = createBitmap(scaled_bm, mBitmap);// 建立浮水印於已拍下的畫面上
 			
 				// iv2=(ImageView) findViewById(R.id.IV2);
 				// iv2.setImageBitmap(srcThree);
@@ -663,17 +663,27 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 							new FileOutputStream(myCaptureFile));
 				
 				
-				srcThree.compress(CompressFormat.JPEG, 100, bos);
+				scaled_bm.compress(CompressFormat.JPEG, 100, bos);
 				bos.flush();
-
+				bIfPreview=false;
+				Bundle bundle = new Bundle();
+      	      
+				
 				/* 結束OutputStream */
 				bos.close();
 				System.out.println("Save picture done");
 				/* 顯示完圖檔，立即重置相機，並關閉預覽 */
-				resetCamera();
-
+			//	resetCamera();
+				Intent intent = new Intent();
+    	        intent.setClass(Camera_Test.this,Temp_Photo.class);
+    	        Log.i(TAG,"public_photo is "+num);
+    	        bundle.putInt("public_photo", num);
+    	        bundle.putString("image_path", strCaptureFilePath);
+    	     //  	intent.putExtra("image_path", image_path);
+    	        intent.putExtras(bundle);
+    	       	startActivity(intent);
 				/* 再重新啟動相機繼續預覽 */
-				initCamera();
+			//	initCamera();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -729,7 +739,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 	//	 resetCamera();
 	//	 if(!bIfPreview)
 //	----------------------------	 
-		 initCamera();
+		 
 			 
 		 
 	}
@@ -739,7 +749,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		// TODO Auto-generated method stub
 		 Log.i(TAG, "Surface surfaceCreated");
 		// surfaceholder.setKeepScreenOn(true);
-		// initCamera();
+		 initCamera();
 	}
 
 	@Override
@@ -748,7 +758,7 @@ public class Camera_Test extends Activity implements SurfaceHolder.Callback {
 		/* 當Surface不存在，需要刪除圖檔 */
 		Log.i(TAG, "Surface Destroyed");
 		try {
-			delFile(strCaptureFilePath);
+		//	delFile(strCaptureFilePath);
 			mCamera01.stopPreview();
 			mCamera01.release();
 			mCamera01 = null;

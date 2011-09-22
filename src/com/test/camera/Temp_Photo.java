@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +25,7 @@ import android.graphics.Bitmap.Config;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -40,6 +43,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class Temp_Photo extends Activity
 {
+	private SimpleDateFormat DateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 	private ImageView mImageView01;
 	private ImageView TempPhoto;
 	private String TAG="Camera_Test";
@@ -133,8 +137,11 @@ public class Temp_Photo extends Activity
 		Bitmap src =  Bitmap.createScaledBitmap(BitmapFactory.decodeFile(image_path), 640, 960, true);
 		Bitmap mBitmap = null;
 		Bitmap srcThree = createBitmap(src, mBitmap);// 建立浮水印於已拍下的畫面上
+		Date date = new Date (System.currentTimeMillis()); 
+		String photo_name = DateFormat.format(date).toString();
 		File myCaptureFile = new File(
-				"/sdcard/CameraTest/combine_snap.jpg");
+				"/sdcard/CameraTest/"+photo_name+".jpg");
+		//Time time = 
 		if (myCaptureFile.exists())
 			myCaptureFile.delete();
 		if (myCaptureFile == null)
