@@ -1,4 +1,4 @@
-package com.test.camera;
+package com.thlight.camera;
 
 
 
@@ -10,35 +10,25 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
+import com.thlight.camera.R;
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 
 public class Temp_Photo extends Activity
@@ -47,7 +37,6 @@ public class Temp_Photo extends Activity
 	private ImageView mImageView01;
 	private ImageView TempPhoto;
 	private String TAG="Camera_Test";
-//	private Integer num;
 	private Button mButton01,mButton02,mButton03;
 	private Integer public_photo;
 	private String image_path;
@@ -64,9 +53,9 @@ public class Temp_Photo extends Activity
 		Bundle bundle = this.getIntent().getExtras();
 		image_path = bundle.getString("image_path");
 		public_photo =  bundle.getInt("public_photo");
-		Log.i(TAG,"From Temp_Photo image_path is : "+image_path);
-		Log.i(TAG,"From Temp_Photo public_photo is : "+public_photo);
+		if(image_path!=null)
 		TempPhoto.setImageURI(Uri.parse(image_path));
+		if(public_photo!=null)
 		mImageView01.setImageResource(public_photo);
 		
 	}
@@ -116,7 +105,7 @@ public class Temp_Photo extends Activity
 
 			@Override
 			public void onClick(View v) {
-				
+				delFile(image_path);
 				finish();
 				
 			}
@@ -141,14 +130,6 @@ public class Temp_Photo extends Activity
 		String photo_name = DateFormat.format(date).toString();
 		File myCaptureFile = new File(
 				"/sdcard/CameraTest/"+photo_name+".jpg");
-		//Time time = 
-		if (myCaptureFile.exists())
-			myCaptureFile.delete();
-		if (myCaptureFile == null)
-			Log.e(TAG, "fail to open new file");
-		else
-			Log.e(TAG, myCaptureFile.toString());
-		
 	
 		BufferedOutputStream bos;
 		try {
@@ -185,26 +166,35 @@ public class Temp_Photo extends Activity
 		//	newb.recycle();
 			BitmapFactory.Options options=new BitmapFactory.Options();
 			options.inSampleSize = 1;
-		//	BitmapFactory.decodeResource(watermark,null,options);
-			//Resource res = null;
-		//	Bitmap scaled_watermark = Bitmap.createBitmap(watermark, 0, 0, w, h, null, true);
-//			if(camera_state)
-//				scaled_watermark = rotate(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),num,options), h, w,true));
-//			else
-				scaled_watermark = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),public_photo,options), w, h,true);
+		
+			scaled_watermark = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),public_photo,options), w, h,true);
 
-				int ww = scaled_watermark.getWidth();
+			int ww = scaled_watermark.getWidth();
 			int wh = scaled_watermark.getHeight();
-				Log.i(TAG,"ww is :"+ww);
-				Log.i(TAG,"wh is :"+wh);
-				// draw src intoBitmap
-				cv.drawBitmap(src, 0, 0, null);// 在 0，0坐标开始画入src
-			//	if(scaled_watermark!=null)
-				cv.drawBitmap(scaled_watermark, 0, 0, null);
-				// save all clip
-				cv.save(Canvas.ALL_SAVE_FLAG);// 保存
-				// store
-				cv.restore();// 存储
-				return newb;
+			Log.i(TAG,"ww is :"+ww);
+			Log.i(TAG,"wh is :"+wh);
+			// draw src intoBitmap
+			if(src!=null)
+			cv.drawBitmap(src, 0, 0, null);// 在 0，0坐标开始画入src
+			if(scaled_watermark!=null)
+			cv.drawBitmap(scaled_watermark, 0, 0, null);
+			// save all clip
+			cv.save(Canvas.ALL_SAVE_FLAG);// 保存
+			// store
+			cv.restore();// 存储
+			return newb;
 		}
+	
+	/* 自訂刪除檔案函數 */
+	private void delFile(String strFileName) {
+		try {
+			File myFile = new File(strFileName);
+			if (myFile.exists()) {
+				myFile.delete();
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.toString());
+			e.printStackTrace();
+		}
+	}
 }

@@ -2,8 +2,13 @@
 <resources>
   <string name="hello">Hello World,Camera_Test</string>
   <string name="app_name">Camera_Test</string>
-  <string name="str_button1">相機Preview</string>
-  <string name="str_button2">關相機</string>
+  <string name="str_button1">相機預覽</string>
   <string name="str_take_picture">拍照</string>
   <string name="str_err_nosd">※未發現安裝SD記憶卡※</string>
+  <string-array name="test">
+      <item>ts</item>
+      <item>a</item>
+      <item>b</item>
+      <item>barack_obama</item>
+  </string-array>
 </resources>

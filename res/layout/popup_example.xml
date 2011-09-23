@@ -1,4 +1,0 @@
-
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-        <Gallery android:layout_weight="1" android:layout_width="wrap_content" android:id="@+id/gallery456t" android:layout_height="wrap_content"></Gallery>
-    </LinearLayout>

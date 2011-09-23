@@ -1,20 +1,19 @@
-package com.test.camera;
+package com.thlight.camera;
 
 	import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
+	import android.graphics.Color;
+
 	import android.view.View;
 	import android.view.ViewGroup;
 	import android.widget.BaseAdapter;
 	import android.widget.Gallery;
-import android.widget.ImageView;
+	import android.widget.ImageView;
 	 
 	public class ImageAdapter extends BaseAdapter {
 	    private Context mContext;
 	    private Integer width;
 	    private Integer height;
 	    private Integer[] mImageIds;
-	 private String TAG="Camera_Test";
 	    public ImageAdapter(Context c) {
 	        mContext = c;
 	    }

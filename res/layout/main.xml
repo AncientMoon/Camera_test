@@ -13,7 +13,7 @@
                 android:layout_width="fill_parent"
                 android:id="@+id/imageView1"
                  android:layout_height="fill_parent"
-                 android:scaleType="fitXY"
+                 
                  android:src="@drawable/ts"></ImageView>
         		<LinearLayout android:orientation="vertical" android:visibility="invisible" android:id="@+id/linear" android:layout_width="fill_parent" android:layout_x="0dp" android:layout_height="100dp" android:layout_y="383dp">
         			<Gallery android:layout_height="wrap_content" android:id="@+id/gallery_test" android:layout_width="fill_parent" android:gravity="bottom"></Gallery>
